@@ -25,7 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <AudioProvider>
           <Header />
           <main>{children}</main>
-          <footer className="mt-16 border-t border-line py-8 pb-28 text-center text-sm text-muted">
+          <footer className="mt-10 border-t border-line px-4 py-6 pb-28 text-center text-xs text-muted">
             Quran text, translations and recitations are provided by the Quran Foundation content API.
           </footer>
           <MiniPlayer />

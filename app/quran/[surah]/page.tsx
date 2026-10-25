@@ -93,20 +93,20 @@ export default async function SurahPage({ params, searchParams }: { params: Para
         <ReadingTracker surah={id} name={chapter.name_simple} />
         <ChapterAudio tracks={tracks} />
         <ReaderToolbar versesCount={chapter.verses_count} options={options} selected={selected} reciters={reciters} reciterId={reciterId} wordMode={wordMode} />
-        <div className="mx-auto max-w-3xl px-4 py-8">
-          <header className="mb-8 text-center">
-            <p className="text-sm text-muted">Surah {chapter.id} · {chapter.revelation_place === "madinah" ? "Medinan" : "Meccan"} · {chapter.verses_count} ayahs</p>
-            <h1 className="mt-1 text-2xl font-semibold">{chapter.name_simple}</h1>
-            <p lang="ar" dir="rtl" className="mt-1 font-arabic text-4xl">{chapter.name_arabic}</p>
-            <p className="mt-1 text-sm text-muted">{chapter.translated_name.name}</p>
+        <div className="mx-auto max-w-3xl px-4 py-5">
+          <header className="mb-5 text-center">
+            <p className="text-xs text-muted">Surah {chapter.id} · {chapter.revelation_place === "madinah" ? "Medinan" : "Meccan"} · {chapter.verses_count} ayahs</p>
+            <h1 className="mt-1 text-2xl font-semibold sm:text-[28px]">{chapter.name_simple}</h1>
+            <p lang="ar" dir="rtl" className="mt-0.5 font-arabic text-2xl sm:text-[28px]">{chapter.name_arabic}</p>
+            <p className="text-xs text-muted">{chapter.translated_name.name}</p>
           </header>
 
           {bismillah && (
-            <p lang="ar" dir="rtl" className="arabic-text mb-6 text-center" style={{ textAlign: "center" }}>{bismillah}</p>
+            <p lang="ar" dir="rtl" className="arabic-text mb-4 text-center" style={{ textAlign: "center" }}>{bismillah}</p>
           )}
 
           {selected.length > 0 && (
-            <p className="mb-6 text-xs text-muted">
+            <p className="mb-4 text-xs text-muted">
               Translation{selected.length > 1 ? "s" : ""}:{" "}
               {selected.map((sid) => meta.get(sid)?.name ?? `#${sid}`).join(" · ")}
             </p>
@@ -114,8 +114,8 @@ export default async function SurahPage({ params, searchParams }: { params: Para
 
           <div className="divide-y divide-line">
             {verses.map((v) => (
-              <article key={v.id} id={`ayah-${v.verse_number}`} className="scroll-mt-44 py-6">
-                <div className="mb-3 flex items-center justify-between text-xs text-muted">
+              <article key={v.id} id={`ayah-${v.verse_number}`} className="scroll-mt-4 py-4">
+                <div className="mb-2 flex items-center justify-between text-xs text-muted">
                   <span className="flex items-center gap-2">
                     <span className="rounded-full border border-gold px-2 py-0.5 text-gold">{v.verse_key}</span>
                     {v.audio?.url ? (
@@ -139,19 +139,19 @@ export default async function SurahPage({ params, searchParams }: { params: Para
                       key={sid}
                       lang={isUrdu ? "ur" : "en"}
                       dir={isUrdu ? "rtl" : "ltr"}
-                      className={isUrdu ? "urdu-text mt-3 text-lg" : "mt-3 text-base leading-relaxed text-muted"}
+                      className={isUrdu ? "urdu-text mt-2 text-base" : "mt-2 text-[15px] leading-relaxed text-muted"}
                     >
                       {cleanTranslation(tr.text)}
                     </p>
                   ) : (
-                    <p key={sid} className="mt-3 text-sm italic text-muted">Translation unavailable for this ayah.</p>
+                    <p key={sid} className="mt-2 text-xs italic text-muted">Translation unavailable for this ayah.</p>
                   );
                 })}
               </article>
             ))}
           </div>
 
-          <nav aria-label="Surah navigation" className="mt-10 flex justify-between text-sm">
+          <nav aria-label="Surah navigation" className="mt-8 flex justify-between text-sm">
             {prev ? <Link href={`/quran/${prev}${q}`} className="rounded-md border border-line bg-surface px-4 py-2 hover:border-accent">← Surah {prev}</Link> : <span />}
             <Link href="/quran" className="px-4 py-2 text-muted hover:text-accent">All surahs</Link>
             {next ? <Link href={`/quran/${next}${q}`} className="rounded-md border border-line bg-surface px-4 py-2 hover:border-accent">Surah {next} →</Link> : <span />}

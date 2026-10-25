@@ -33,11 +33,11 @@ export function SearchForm({ initial }: { initial: string }) {
       <form onSubmit={submit} role="search" className="flex gap-2">
         <label className="relative flex-1">
           <span className="sr-only">Search the Quran</span>
-          <Search aria-hidden className="absolute left-3 top-3 h-4 w-4 text-muted" />
+          <Search aria-hidden className="absolute left-3 top-2.5 h-4 w-4 text-muted" />
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Word, phrase, surah name, or reference like 2:255"
-            className="w-full rounded-xl border border-line bg-surface py-2.5 pl-9 pr-3" />
+            className="w-full rounded-xl border border-line bg-surface py-2 pl-9 pr-3 text-sm" />
         </label>
-        <button className="rounded-xl bg-accent px-5 text-bg">Search</button>
+        <button className="rounded-xl bg-accent px-4 text-sm text-bg">Search</button>
       </form>
       {recent.length > 0 && (
         <p className="mt-3 flex flex-wrap items-center gap-2 text-sm">

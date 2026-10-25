@@ -34,8 +34,8 @@ export function StudyVerse({ words, verseKey }: { words: Word[]; verseKey: strin
         )}
       </p>
       {word && (
-        <div role="region" aria-label="Word details" className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-2 rounded-xl border border-line bg-surface p-4">
-          <span lang="ar" dir="rtl" className="font-arabic text-3xl">{word.text_uthmani}</span>
+        <div role="region" aria-label="Word details" className="mt-2 flex flex-wrap items-center gap-x-5 gap-y-2 rounded-xl border border-line bg-surface p-3">
+          <span lang="ar" dir="rtl" className="font-arabic text-2xl">{word.text_uthmani}</span>
           <div className="min-w-0 flex-1 text-sm">
             {word.transliteration?.text && <p className="italic text-muted">{word.transliteration.text}</p>}
             <p>{word.translation?.text || <span className="text-muted">No word translation available.</span>}</p>

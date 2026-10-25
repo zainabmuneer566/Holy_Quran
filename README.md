@@ -60,5 +60,9 @@ These were written from the provider's documented v4 shapes and could not be run
 
 If something fails, the on-screen message says which part, and fixes should be small edits in `lib/quran/server.ts` or `lib/quran/audio.ts`.
 
+## UI notes
+- Only the audio player is fixed to the screen (while audio is playing). The site header and the reader options scroll away with the page.
+- Type scale: page headings 24-28px, section headings 18px, body 14-16px, secondary text 12-14px. Quran text is separate and adjustable: default 26px on phones, 30px on tablets, 32px on desktop. The size slider's choice is remembered in the browser.
+
 ## Deploying
 Vercel-compatible. Add the same environment variables in the project settings.

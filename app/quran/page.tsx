@@ -18,8 +18,8 @@ export default async function QuranIndex() {
       verses: c.verses_count,
     }));
     return (
-      <div className="mx-auto max-w-4xl px-4 py-8">
-        <h1 className="mb-6 text-2xl font-semibold">The Holy Quran</h1>
+      <div className="mx-auto max-w-4xl px-4 py-6">
+        <h1 className="mb-4 text-2xl font-semibold sm:text-[28px]">The Holy Quran</h1>
         <SurahList items={items} />
       </div>
     );

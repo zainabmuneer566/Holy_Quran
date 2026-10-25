@@ -21,16 +21,16 @@ export default async function JuzPage({ params }: { params: Params }) {
     const juz = juzs.find((j) => j.juz_number === n);
     if (!juz) notFound();
     return (
-      <div className="mx-auto max-w-2xl px-4 py-8">
-        <h1 className="text-2xl font-semibold">Juz {n}</h1>
+      <div className="mx-auto max-w-2xl px-4 py-6">
+        <h1 className="text-2xl font-semibold sm:text-[28px]">Juz {n}</h1>
         <p className="mt-1 text-sm text-muted">{juz.verses_count} ayahs. Choose where to start reading:</p>
-        <ul className="mt-6 space-y-3">
+        <ul className="mt-4 space-y-2.5">
           {Object.entries(juz.verse_mapping).map(([surah, range]) => {
             const [from, to] = range.split("-");
             const c = chapters.find((x) => x.id === Number(surah));
             return (
               <li key={surah}>
-                <Link href={`/quran/${surah}#ayah-${from}`} className="flex items-center justify-between rounded-2xl border border-line bg-surface p-4 hover:border-accent">
+                <Link href={`/quran/${surah}#ayah-${from}`} className="flex items-center justify-between rounded-xl border border-line bg-surface p-3 text-sm hover:border-accent">
                   <span>{c?.name_simple ?? `Surah ${surah}`}</span>
                   <span className="text-sm text-muted">ayahs {from}–{to ?? from}</span>
                 </Link>
@@ -38,7 +38,7 @@ export default async function JuzPage({ params }: { params: Params }) {
             );
           })}
         </ul>
-        <nav aria-label="Juz navigation" className="mt-8 flex justify-between text-sm">
+        <nav aria-label="Juz navigation" className="mt-6 flex justify-between text-sm">
           {n > 1 ? <Link href={`/juz/${n - 1}`} className="rounded-md border border-line bg-surface px-4 py-2 hover:border-accent">← Juz {n - 1}</Link> : <span />}
           {n < 30 ? <Link href={`/juz/${n + 1}`} className="rounded-md border border-line bg-surface px-4 py-2 hover:border-accent">Juz {n + 1} →</Link> : <span />}
         </nav>

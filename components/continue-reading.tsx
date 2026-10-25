@@ -14,7 +14,7 @@ export function ContinueReading() {
   }, []);
   if (!last) return null;
   return (
-    <Link href={`/quran/${last.surah}`} className="inline-block rounded-xl border border-line bg-surface px-5 py-3 text-sm hover:border-accent">
+    <Link href={`/quran/${last.surah}`} className="inline-block rounded-xl border border-line bg-surface px-4 py-2.5 text-sm hover:border-accent">
       Continue reading: <strong>{last.name}</strong>
     </Link>
   );

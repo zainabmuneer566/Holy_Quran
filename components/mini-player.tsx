@@ -9,12 +9,12 @@ const modeLabel: Record<RepeatMode, string> = { off: "Repeat off", ayah: "Repeat
 export function MiniPlayer() {
   const a = useAudio();
   if (!a.current) return null;
-  const btn = "rounded-full p-2 hover:bg-line disabled:opacity-40";
+  const btn = "rounded-full p-1.5 hover:bg-line disabled:opacity-40 sm:p-2";
   return (
     <div role="region" aria-label="Audio player" className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface shadow-lg">
-      <div className="mx-auto flex max-w-3xl flex-wrap items-center gap-x-4 gap-y-1 px-4 py-2">
+      <div className="mx-auto flex max-w-3xl flex-wrap items-center gap-x-3 gap-y-0.5 px-3 py-1.5 sm:gap-x-4 sm:px-4 sm:py-2">
         <div className="min-w-0 flex-1 basis-40">
-          <p className="truncate text-sm font-medium">{a.current.label}</p>
+          <p className="truncate text-[13px] font-medium sm:text-sm">{a.current.label}</p>
           {a.error && <p role="alert" className="text-xs text-red-600">{a.error}</p>}
         </div>
         <div className="flex items-center">
@@ -37,8 +37,8 @@ export function MiniPlayer() {
           <select aria-label="Playback speed" value={a.rate} onChange={(e) => a.setRate(Number(e.target.value))} className="rounded border border-line bg-surface px-1 py-1">
             {[0.75, 1, 1.25, 1.5].map((r) => <option key={r} value={r}>{r}×</option>)}
           </select>
-          <Volume2 aria-hidden className="h-4 w-4 text-muted" />
-          <input type="range" aria-label="Volume" min={0} max={1} step={0.05} value={a.volume} onChange={(e) => a.setVolume(Number(e.target.value))} className="w-16 accent-[var(--accent)]" />
+          <Volume2 aria-hidden className="hidden h-4 w-4 text-muted sm:block" />
+          <input type="range" aria-label="Volume" min={0} max={1} step={0.05} value={a.volume} onChange={(e) => a.setVolume(Number(e.target.value))} className="hidden w-16 accent-[var(--accent)] sm:block" />
           <button className={btn} onClick={a.stop} aria-label="Close player"><X className="h-4 w-4" /></button>
         </div>
       </div>

@@ -16,8 +16,8 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
   const page = Math.max(1, Math.floor(Number(rawPage)) || 1);
 
   const shell = (body: React.ReactNode) => (
-    <div className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="mb-4 text-2xl font-semibold">Search</h1>
+    <div className="mx-auto max-w-3xl px-4 py-6">
+      <h1 className="mb-3 text-2xl font-semibold sm:text-[28px]">Search</h1>
       <SearchForm initial={q} />
       {body}
     </div>
@@ -57,13 +57,13 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
       <>
         {surahs.length > 0 && (
           <section className="mt-6" aria-labelledby="surah-matches">
-            <h2 id="surah-matches" className="mb-2 text-sm font-medium uppercase tracking-wide text-gold">Surahs</h2>
+            <h2 id="surah-matches" className="mb-2 text-lg font-semibold text-gold">Surahs</h2>
             <ul className="space-y-2">
               {surahs.map((c) => (
                 <li key={c.id}>
                   <Link href={`/quran/${c.id}`} className="flex items-center justify-between rounded-xl border border-line bg-surface p-3 hover:border-accent">
                     <span>{c.id}. {c.name_simple}</span>
-                    <span lang="ar" dir="rtl" className="font-arabic text-xl">{c.name_arabic}</span>
+                    <span lang="ar" dir="rtl" className="font-arabic text-lg">{c.name_arabic}</span>
                   </Link>
                 </li>
               ))}
@@ -73,7 +73,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
         {searchProblem && <p role="alert" className="mt-6 rounded-xl border border-line bg-surface p-4 text-sm">{searchProblem}</p>}
         {result && (
           <section className="mt-6" aria-labelledby="verse-matches">
-            <h2 id="verse-matches" className="mb-1 text-sm font-medium uppercase tracking-wide text-gold">Verses</h2>
+            <h2 id="verse-matches" className="mb-1 text-lg font-semibold text-gold">Verses</h2>
             <p className="mb-3 text-xs text-muted">
               {result.total_results} result{result.total_results === 1 ? "" : "s"}. Matches come from the provider&apos;s search index; open an ayah in the reader for the full authoritative text.
             </p>
@@ -84,10 +84,10 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
                 {result.results.map((r) => {
                   const [s, a] = r.verse_key.split(":");
                   return (
-                    <li key={r.verse_key} className="rounded-2xl border border-line bg-surface p-4">
+                    <li key={r.verse_key} className="rounded-xl border border-line bg-surface p-3">
                       <Link href={`/quran/${s}#ayah-${a}`} className="text-sm font-medium text-accent hover:underline">{r.verse_key} — open in reader</Link>
                       {(r.highlighted || r.text) && (
-                        <p lang="ar" dir="rtl" className="mt-2 font-arabic text-2xl leading-loose"><Highlighted html={r.highlighted || r.text || ""} /></p>
+                        <p lang="ar" dir="rtl" className="mt-2 font-arabic text-xl leading-loose"><Highlighted html={r.highlighted || r.text || ""} /></p>
                       )}
                       {r.translations?.map((t, i) => (
                         <p key={i} className="mt-2 text-sm text-muted">

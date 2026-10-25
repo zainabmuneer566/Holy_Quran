@@ -11,15 +11,15 @@ export default async function JuzIndex() {
     const [juzs, chapters] = await Promise.all([getJuzs(), getChapters()]);
     const name = (id: string) => chapters.find((c) => c.id === Number(id))?.name_simple ?? `Surah ${id}`;
     return (
-      <div className="mx-auto max-w-4xl px-4 py-8">
-        <h1 className="mb-6 text-2xl font-semibold">Juz (Para)</h1>
-        <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mx-auto max-w-4xl px-4 py-6">
+        <h1 className="mb-4 text-2xl font-semibold sm:text-[28px]">Juz (Para)</h1>
+        <ul className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
           {juzs.map((j) => {
             const [firstSurah, range] = Object.entries(j.verse_mapping)[0] ?? ["1", "1-1"];
             return (
               <li key={j.id}>
-                <Link href={`/juz/${j.juz_number}`} className="block rounded-2xl border border-line bg-surface p-4 shadow-sm hover:border-accent">
-                  <span className="font-medium">Juz {j.juz_number}</span>
+                <Link href={`/juz/${j.juz_number}`} className="block rounded-xl border border-line bg-surface p-3 shadow-sm hover:border-accent">
+                  <span className="text-[15px] font-medium">Juz {j.juz_number}</span>
                   <span className="block text-xs text-muted">Starts: {name(firstSurah)} {range.split("-")[0]}</span>
                 </Link>
               </li>
