@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { APP_NAME } from "@/lib/config";
 import { ContinueReading } from "@/components/continue-reading";
+import { DailyAyah } from "@/components/daily-ayah";
 
 const featured = [
   { href: "/quran/1", label: "Al-Fatihah" },
@@ -11,9 +12,11 @@ const featured = [
   { href: "/quran/67", label: "Al-Mulk" },
 ];
 
-export default function Home() {
+export default async function Home({ searchParams }: { searchParams: Promise<{ deleted?: string }> }) {
+  const { deleted } = await searchParams;
   return (
     <div className="mx-auto max-w-5xl px-4">
+      {deleted && <p role="status" className="mt-4 rounded-md border border-line bg-surface p-2 text-center text-sm">Your account and personal data have been deleted.</p>}
       <section className="py-10 text-center sm:py-14">
         <h1 className="text-2xl font-semibold tracking-tight text-accent sm:text-[28px]">{APP_NAME}</h1>
         <p className="mx-auto mt-3 max-w-xl text-[15px] text-muted">
@@ -27,6 +30,8 @@ export default function Home() {
           <ContinueReading />
         </div>
       </section>
+
+      <DailyAyah />
 
       <section aria-labelledby="featured">
         <h2 id="featured" className="mb-3 text-lg font-semibold text-gold">

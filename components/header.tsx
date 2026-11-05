@@ -1,9 +1,12 @@
 import Link from "next/link";
 import { BookOpen } from "lucide-react";
 import { APP_NAME } from "@/lib/config";
-import { ThemeToggle } from "./theme-toggle";
+import { getCurrentUser } from "@/lib/auth";
+import { SiteMenu } from "./site-menu";
 
-export function Header() {
+export async function Header() {
+  const user = await getCurrentUser();
+  const name = user ? (user.user_metadata?.display_name as string | undefined) || user.email || null : null;
   return (
     <header className="border-b border-line bg-bg">
       <div className="mx-auto flex h-12 max-w-5xl items-center justify-between px-4">
@@ -15,7 +18,7 @@ export function Header() {
           <Link href="/quran" className="hover:text-accent">Surahs</Link>
           <Link href="/juz" className="hover:text-accent">Juz</Link>
           <Link href="/search" className="hover:text-accent">Search</Link>
-          <ThemeToggle />
+          <SiteMenu signedIn={Boolean(user)} name={name} />
         </nav>
       </div>
     </header>

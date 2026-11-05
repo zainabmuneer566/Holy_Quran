@@ -21,6 +21,7 @@ export interface Verse {
   page_number: number;
   text_uthmani: string;
   translations?: VerseTranslation[];
+  text_uthmani_tajweed?: string;
   words?: Word[];
   audio?: { url: string | null } | null;
 }
@@ -68,4 +69,16 @@ export interface SearchResponse {
   current_page: number;
   total_pages: number;
   results: SearchResult[];
+}
+
+export interface TafsirResource {
+  id: number;
+  name: string;
+  author_name: string;
+  language_name: string;
+}
+
+export interface TafsirContent {
+  text: string;
+  resource_name?: string;
 }

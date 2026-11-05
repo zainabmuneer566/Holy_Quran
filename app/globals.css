@@ -5,18 +5,18 @@
 :root,
 [data-theme="light"] {
   --bg: #faf7ef; --surface: #ffffff; --text: #1b2523; --muted: #5a6865;
-  --accent: #0f5c57; --gold: #8f6f27; --border: #e4ddcb;
+  --accent: #0f5c57; --gold: #84651d; --border: #e4ddcb; --danger: #b91c1c;
   --arabic-size: 26px;
 }
 @media (min-width: 640px) { :root { --arabic-size: 30px; } }
 @media (min-width: 1024px) { :root { --arabic-size: 32px; } }
 [data-theme="dark"] {
   --bg: #0b1a19; --surface: #12292a; --text: #e7efec; --muted: #9bb0ab;
-  --accent: #4fb3a9; --gold: #d4b25f; --border: #23403f;
+  --accent: #4fb3a9; --gold: #d4b25f; --border: #23403f; --danger: #f87171;
 }
 [data-theme="sepia"] {
   --bg: #f1e6cf; --surface: #f8f0dd; --text: #3b2f1e; --muted: #6f5d42;
-  --accent: #7a5a1e; --gold: #8a6718; --border: #dccdaa;
+  --accent: #7a5a1e; --gold: #7a5c10; --border: #dccdaa; --danger: #b91c1c;
 }
 
 html { color-scheme: light; }

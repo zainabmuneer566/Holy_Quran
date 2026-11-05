@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { recordVisit } from "@/app/actions/personal";
 
 export interface LastRead { surah: number; name: string }
 
@@ -20,11 +21,12 @@ export function ContinueReading() {
   );
 }
 
-export function ReadingTracker({ surah, name }: LastRead) {
+export function ReadingTracker({ surah, name, record }: LastRead & { record?: boolean }) {
   useEffect(() => {
     try {
       localStorage.setItem("noor:last", JSON.stringify({ surah, name }));
     } catch {}
-  }, [surah, name]);
+    if (record) void recordVisit(surah);
+  }, [surah, name, record]);
   return null;
 }

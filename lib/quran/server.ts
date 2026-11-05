@@ -1,5 +1,5 @@
 import "server-only";
-import type { Chapter, Juz, Recitation, SearchResponse, TranslationResource, Verse } from "./types";
+import type { Chapter, Juz, Recitation, SearchResponse, TafsirContent, TafsirResource, TranslationResource, Verse } from "./types";
 
 export type QuranErrorKind = "not_configured" | "auth" | "unavailable";
 
@@ -109,6 +109,8 @@ export interface VerseOptions {
   reciterId?: number;
   words?: boolean;
   wordLanguage?: string;
+  tajweed?: boolean;
+  maxPages?: number;
 }
 
 export async function getChapterVerses(chapterId: number, o: VerseOptions): Promise<Verse[]> {
@@ -118,7 +120,7 @@ export async function getChapterVerses(chapterId: number, o: VerseOptions): Prom
     const params: Record<string, string | number> = {
       language: o.wordLanguage ?? "en",
       words: o.words ? "true" : "false",
-      fields: "text_uthmani",
+      fields: o.tajweed ? "text_uthmani,text_uthmani_tajweed" : "text_uthmani",
       translations: o.translationIds.join(","),
       per_page: 50,
       page,
@@ -127,7 +129,7 @@ export async function getChapterVerses(chapterId: number, o: VerseOptions): Prom
     if (o.reciterId) params.audio = o.reciterId;
     const data: VersesPage = await api<VersesPage>(`/verses/by_chapter/${chapterId}`, params);
     all.push(...data.verses);
-    page = data.pagination.next_page;
+    page = o.maxPages && page >= o.maxPages ? null : data.pagination.next_page;
   }
   return all;
 }
@@ -151,4 +153,32 @@ export async function searchQuran(q: string, page: number): Promise<SearchRespon
 export async function getBismillahText(): Promise<string> {
   const data = await api<{ verse: Verse }>("/verses/by_key/1:1", { fields: "text_uthmani" });
   return data.verse.text_uthmani;
+}
+
+export async function getTafsirResources(): Promise<TafsirResource[]> {
+  const data = await api<{ tafsirs: TafsirResource[] }>("/resources/tafsirs", { language: "en" });
+  return data.tafsirs;
+}
+
+export async function getTafsir(resourceId: number, verseKey: string): Promise<TafsirContent> {
+  const data = await api<{ tafsir: TafsirContent }>(`/tafsirs/${resourceId}/by_ayah/${verseKey}`);
+  return data.tafsir;
+}
+
+export interface VerseKeyOptions {
+  translationIds?: number[];
+  reciterId?: number;
+  tajweed?: boolean;
+}
+
+export async function getVerseByKey(key: string, o: VerseKeyOptions = {}): Promise<Verse> {
+  const params: Record<string, string | number> = {
+    language: "en",
+    words: "false",
+    fields: o.tajweed ? "text_uthmani,text_uthmani_tajweed" : "text_uthmani",
+  };
+  if (o.translationIds?.length) params.translations = o.translationIds.join(",");
+  if (o.reciterId) params.audio = o.reciterId;
+  const data = await api<{ verse: Verse }>(`/verses/by_key/${key}`, params);
+  return data.verse;
 }

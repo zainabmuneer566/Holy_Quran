@@ -11,6 +11,7 @@ const config: Config = {
         muted: "var(--muted)",
         accent: "var(--accent)",
         gold: "var(--gold)",
+        danger: "var(--danger)",
         line: "var(--border)",
       },
       fontFamily: {

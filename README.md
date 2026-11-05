@@ -34,31 +34,30 @@ translation HTML (footnote markers) is cleaned for display only.
 
 Without credentials or that flag, pages show a clear setup message instead of content.
 
-## Status (Phase 2)
+## Status
 
-**Implemented**
-- Reader: Arabic (Amiri Quran), English and Urdu translations (up to two, with attribution), Arabic size slider, jump-to-ayah, previous/next surah, juz and page labels
-- Recitation: reciter list from the provider, per-ayah play/pause, persistent mini-player (play/pause, previous/next ayah, seek, speed, volume, repeat ayah or surah, auto-advance to next ayah), Media Session controls, remembered speed/volume/repeat, error states, "Audio unavailable" when an ayah has no audio
-- Word by word: toggle in the reader toolbar; select a word to see its transliteration, word translation (Urdu when your first translation is Urdu), position, and play word audio when the provider supplies it
-- Juz: `/juz` index and `/juz/[number]` with links to each surah range
-- Search: Arabic and translation search through the provider, surah-name matches, direct ayah references (e.g. `2:255`), highlighted matches, pagination, recent searches (stored in your browser)
-- Loading skeletons, error boundary, proper 404s, and clear states for missing/bad credentials, provider outage, missing translations and missing audio
+**Works without any account** (needs only the Quran content source): Surah and Juz navigation, reader with English/Urdu translations, word by word, per-ayah recitation with a persistent player, search, tafsir (`/tafsir/[surah]/[ayah]`), shareable single-ayah pages (`/reader/[surah]/[ayah]`), Tajweed learning page (colours only when the provider returns annotations), memorization practice (hide/reveal/listen), Daily Ayah with Gregorian and calculated Hijri dates, light/dark/sepia themes, sitemap, robots and favicon.
 
-**Not yet built**: Supabase auth and personal data (bookmarks, notes, history), tafsir, memorization, tajweed, goals, daily ayah, sharing, a dedicated `/listen` studio page, repeat-a-range and a surah playlist queue, search filters by surah/juz and a separate "Arabic vs translation" toggle, Hizb/Ruku navigation, Mushaf-style layout, SEO files, shadcn/ui components.
+**Needs Supabase (see SETUP.md)**: sign up / sign in / sign out, password reset, Google and Facebook sign-in, bookmarks with collections, private notes, mark-as-read progress, reading history and resume, memorization tracking with revision dates, goals dashboard, settings (translations, reciter, theme, text size, privacy), profile, account deletion (also needs the service-role key).
 
-## Verification performed
-- `tsc --noEmit` and `next build` pass.
-- Juz pages, reciter switching, audio URL resolution, missing-audio handling, word mode, search (highlighting, pagination, ayah-reference redirect, denied-access message), 404s and error states were exercised against a **local mock** of the API's response shapes.
+**Saved but not active**: reminder preferences are stored, but nothing sends notifications yet.
 
-## Not verified against the live provider (please check)
-These were written from the provider's documented v4 shapes and could not be run against the real service from the build environment:
-- OAuth token flow and the `/juzs`, `/resources/recitations`, `/search` endpoints and their paging (search `page` is assumed 1-based)
-- Verse audio via the `audio=<reciter id>` parameter, and the audio hosts used to resolve relative paths (`verses.quran.com` for verses, `audio.qurancdn.com` for words) in `lib/quran/audio.ts`
-- Word fields (`word_fields=text_uthmani`, word translation language via `language`)
-- Whether your credentials include search access
-- Actual audio playback, Arabic rendering in browsers, mobile layouts, accessibility audit
+**Not implemented**: temporary local bookmarks for visitors, repeat-a-range and a surah playlist queue, a dedicated `/listen` studio page, Mushaf-style page layout, Hizb/Ruku navigation, search filters by surah/juz, data export, other interface languages, an image share card (sharing is text plus a link to the ayah page).
 
-If something fails, the on-screen message says which part, and fixes should be small edits in `lib/quran/server.ts` or `lib/quran/audio.ts`.
+## Tests
+```
+npm run typecheck   # TypeScript
+npm run test:unit   # logic and safety helpers
+npm run test:db     # runs the real database migration in an in-process Postgres and checks row level security
+npm test            # both test suites
+```
+`test:db` uses a stub of Supabase's `auth` schema, so it verifies the schema and policies, not a live Supabase project.
+
+## Not verified against live services
+- The Quran Foundation endpoints (OAuth, audio hosts, tafsir, search, Tajweed annotations and rule names) were checked only against a local stand-in of their documented response shapes.
+- Supabase Auth flows (email confirmation, password reset, Google, Facebook) and the Supabase client calls were not run against a real project.
+- No automated browser or screen-reader testing has been done; colour contrast was checked by calculation (all text colours meet WCAG AA 4.5:1 in all three themes).
+- Privacy Policy and Terms are drafts and need legal review.
 
 ## UI notes
 - Only the audio player is fixed to the screen (while audio is playing). The site header and the reader options scroll away with the page.

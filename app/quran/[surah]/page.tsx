@@ -11,6 +11,9 @@ import { cleanTranslation } from "@/lib/quran/text";
 import { ApiProblem } from "@/components/setup-notice";
 import { ReaderToolbar } from "@/components/reader-toolbar";
 import { ReadingTracker } from "@/components/continue-reading";
+import { AyahActions } from "@/components/ayah-actions";
+import { getCurrentUser, getPreferences } from "@/lib/auth";
+import { getSurahPersonal, type SurahPersonal } from "@/lib/personal";
 
 export const dynamic = "force-dynamic";
 
@@ -39,6 +42,8 @@ export default async function SurahPage({ params, searchParams }: { params: Para
   if (!id) notFound();
 
   try {
+    const user = await getCurrentUser();
+    const prefs = await getPreferences();
     const [chapter, resources, recitations] = await Promise.all([
       getChapter(id),
       getTranslationResources(),
@@ -47,7 +52,7 @@ export default async function SurahPage({ params, searchParams }: { params: Para
     ]);
 
     const reciters = recitations.map((x) => ({ id: x.id, label: x.style ? `${x.reciter_name} (${x.style})` : x.reciter_name }));
-    const requested = Number(r);
+    const requested = Number(r || prefs?.reciter_id);
     const reciterId = reciters.some((x) => x.id === requested) ? requested : (reciters.find((x) => x.id === 7)?.id ?? reciters[0]?.id ?? null);
 
     const supported = resources.filter((r) => ["english", "urdu"].includes(r.language_name.toLowerCase()));
@@ -62,8 +67,9 @@ export default async function SurahPage({ params, searchParams }: { params: Para
     else if (t) {
       selected = t.split(",").map(Number).filter((n) => options.some((o) => o.id === n)).slice(0, 2);
     } else {
+      const saved = (prefs?.translation_ids ?? []).filter((n) => options.some((o) => o.id === n)).slice(0, 2);
       const english = supported.find((r) => r.id === 20) ?? supported.find((r) => r.language_name.toLowerCase() === "english");
-      selected = english ? [english.id] : [];
+      selected = saved.length ? saved : english ? [english.id] : [];
     }
 
     const [verses, bismillah] = await Promise.all([
@@ -76,6 +82,8 @@ export default async function SurahPage({ params, searchParams }: { params: Para
       chapter.bismillah_pre ? getBismillahText() : Promise.resolve(null),
     ]);
 
+    const empty: SurahPersonal = { bookmarked: new Set(), notes: new Map(), readToday: new Set() };
+    const personal = user ? await getSurahPersonal(id) : empty;
     const meta = new Map(supported.map((r) => [r.id, r]));
     const prev = id > 1 ? id - 1 : null;
     const next = id < 114 ? id + 1 : null;
@@ -90,7 +98,7 @@ export default async function SurahPage({ params, searchParams }: { params: Para
 
     return (
       <>
-        <ReadingTracker surah={id} name={chapter.name_simple} />
+        <ReadingTracker surah={id} name={chapter.name_simple} record={Boolean(user)} />
         <ChapterAudio tracks={tracks} />
         <ReaderToolbar versesCount={chapter.verses_count} options={options} selected={selected} reciters={reciters} reciterId={reciterId} wordMode={wordMode} />
         <div className="mx-auto max-w-3xl px-4 py-5">
@@ -147,6 +155,17 @@ export default async function SurahPage({ params, searchParams }: { params: Para
                     <p key={sid} className="mt-2 text-xs italic text-muted">Translation unavailable for this ayah.</p>
                   );
                 })}
+                <AyahActions
+                  surah={id}
+                  ayah={v.verse_number}
+                  signedIn={Boolean(user)}
+                  bookmarked={personal.bookmarked.has(v.verse_number)}
+                  note={personal.notes.get(v.verse_number) ?? ""}
+                  readToday={personal.readToday.has(v.verse_number)}
+                  arabic={v.text_uthmani}
+                  translation={selected[0] !== undefined ? cleanTranslation(v.translations?.find((x) => x.resource_id === selected[0])?.text ?? "") || null : null}
+                  translationSource={selected[0] !== undefined ? meta.get(selected[0])?.author_name ?? null : null}
+                />
               </article>
             ))}
           </div>

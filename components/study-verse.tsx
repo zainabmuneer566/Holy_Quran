@@ -48,7 +48,7 @@ export function StudyVerse({ words, verseKey }: { words: Word[]; verseKey: strin
           ) : (
             <span className="text-xs text-muted">Word audio unavailable</span>
           )}
-          {audioError && <span role="alert" className="text-xs text-red-600">Could not play word audio.</span>}
+          {audioError && <span role="alert" className="text-xs text-danger">Could not play word audio.</span>}
         </div>
       )}
     </div>

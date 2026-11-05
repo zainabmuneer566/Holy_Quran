@@ -15,7 +15,7 @@ export function MiniPlayer() {
       <div className="mx-auto flex max-w-3xl flex-wrap items-center gap-x-3 gap-y-0.5 px-3 py-1.5 sm:gap-x-4 sm:px-4 sm:py-2">
         <div className="min-w-0 flex-1 basis-40">
           <p className="truncate text-[13px] font-medium sm:text-sm">{a.current.label}</p>
-          {a.error && <p role="alert" className="text-xs text-red-600">{a.error}</p>}
+          {a.error && <p role="alert" className="text-xs text-danger">{a.error}</p>}
         </div>
         <div className="flex items-center">
           <button className={btn} onClick={a.prev} disabled={!a.hasPrev} aria-label="Previous ayah"><SkipBack className="h-4 w-4" /></button>
